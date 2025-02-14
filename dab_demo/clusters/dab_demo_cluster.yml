@@ -1,0 +1,57 @@
+variables:
+  dab_demo_cluster:
+    description: The cluster to use for the job
+    type: complex
+    default: 
+      cluster_name: ""
+      spark_version: 15.4.x-scala2.12
+      node_type_id: Standard_D3_v2
+      spark_conf:
+        spark.databricks.repl.allowedLanguages: python,sql,scala
+        spark.serializer: org.apache.spark.serializer.KryoSerializer
+        spark.databricks.pyspark.iptable.outbound.whitelisted.ports: "3128"
+        spark.executor.extraJavaOptions: -Djava.net.useSystemProxies=true -Djava.security.properties=
+        spark.hadoop.fs.foundry.impl: com.palantir.foundry.fs.FoundryFileSystem
+        spark.databricks.queryWatchdog.enabled: "false"
+        spark.databricks.pyspark.enableProcessIsolation: "true"
+        spark.kryoserializer.buffer.max: 2000M
+        spark.databricks.pip.ignoreSSL: "true"
+        spark.databricks.delta.preview.enabled: "true"
+        spark.sql.hive.metastore.jars: /dbfs/metastore/hive-3-1-0/lib/*
+        spark.databricks.pyspark.trustedFilesystems: com.palantir.foundry.fs.FoundryFileSystem,org.apache.hadoop.fs.FileSystem,com.google.cloud.hadoop.fs.gcs.GoogleHadoopFileSystem,com.databricks.adl.AdlFileSystem,com.databricks.s3a.S3AFileSystem,shaded.databricks.org.apache.hadoop.fs.azure.NativeAzureFileSystem,shaded.databricks.azurebfs.org.apache.hadoop.fs.azurebfs.SecureAzureBlobFileSystem,org.apache.hadoop.fs.LocalFileSystem,com.databricks.backend.daemon.driver.WorkspaceLocalFileSystem,shaded.databricks.azurebfs.org.apache.hadoop.fs.azurebfs.SecureAzureBlobFileSystemHadoop3,com.databricks.common.filesystem.LokiFileSystem,shaded.databricks.org.apache.hadoop.fs.s3a.S3AFileSystemHadoop3
+        spark.hadoop.foundry.trustStorePath: /usr/lib/jvm/zulu8-ca-amd64/jre/lib/security/cacerts
+        spark.databricks.acl.dfAclsEnabled: "false"
+        javax.jdo.option.ConnectionUserName: "{{secrets/eastus2prod30277kvsas01/databri\
+          cks-eastus2-prod-mssas01-sqldb-user}}"
+        spark.databricks.pyspark.enablePy4JSecurity: "false"
+        spark.driver.extraJavaOptions: -Djava.net.useSystemProxies=true -Djava.security.properties=
+        spark.databricks.libraries.ignoreSSL: "true"
+        spark.rpc.message.maxSize: "1024"
+        javax.jdo.option.ConnectionURL: "{{secrets/eastus2prod30277kvsas01/databricks-e\
+          astus2-prod-mssas01-sqldb-connectionurl}}"
+        spark.driver.extraClassPath: dbfs:/FileStore/jars/1beeaba7_253c_4831_a6fd_1aa50a83a73c-terajdbc4.jar,dbfs:/FileStore/jars/c4cea6a2_3c75_40e9_9edb_d7c59a72c4de-tdgssconfig.jar
+        javax.jdo.option.ConnectionDriverName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+        javax.jdo.option.ConnectionPassword: "{{secrets/eastus2prod30277kvsas01/databri\
+          cks-eastus2-prod-mssas01-sqldb-password}}"
+        spark.databricks.passthrough.enabled: "true"
+        spark.databricks.cluster.profile: serverless
+        spark.sql.hive.metastore.version: 3.1.0
+      azure_attributes:
+        first_on_demand: 1
+        availability: ON_DEMAND_AZURE
+        spot_bid_max_price: -1
+      driver_node_type_id: Standard_D3_v2
+      custom_tags:
+        BU_Mots_ID: "31763"
+        BU_Name: CERA
+      cluster_log_conf:
+        dbfs:
+          destination: dbfs:/mnt/overwatch-logs
+      spark_env_vars:
+        PYSPARK_PYTHON: /databricks/python3/bin/python3
+      enable_elastic_disk: true
+      policy_id: 00155CC515426D1E
+      runtime_engine: STANDARD
+      autoscale:
+        min_workers: 1
+        max_workers: 5

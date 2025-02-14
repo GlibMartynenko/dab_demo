@@ -1,0 +1,50 @@
+# The main job for dab_demo.
+resources:
+  jobs:
+    dab_demo_job:
+      name: dab_demo_job
+
+      schedule:
+        # Run every day at 8:37 AM
+        quartz_cron_expression: '44 37 8 * * ?'
+        timezone_id: Europe/Amsterdam
+
+      email_notifications:
+        on_failure:
+          - gm3404@att.com
+
+      tasks:
+        - task_key: ingestion_data
+          job_cluster_key: dab_demo_job_cluster
+          notebook_task:
+            notebook_path: ../src/ingestion_data.ipynb
+        - task_key: filter_data
+          job_cluster_key: dab_demo_job_cluster
+          notebook_task:
+            notebook_path: ../src/filter_data.ipynb
+          depends_on:
+            - task_key: ingestion_data
+        - task_key: viz_data
+          job_cluster_key: dab_demo_job_cluster
+          notebook_task:
+            notebook_path: ../src/viz_data.ipynb
+          depends_on:
+            - task_key: filter_data
+        
+      job_clusters:
+        - job_cluster_key: dab_demo_job_cluster
+          new_cluster: ${var.dab_demo_cluster}
+      
+      parameters:
+        - name: puYear
+          default: ${var.puYear}
+        - name: puMonth
+          default: ${var.puMonth}
+        - name: passengerCount
+          default: ${var.passengerCount}
+        - name: totalAmount
+          default: ${var.totalAmount}
+        - name: tripDistance
+          default: ${var.tripDistance}
+
+            

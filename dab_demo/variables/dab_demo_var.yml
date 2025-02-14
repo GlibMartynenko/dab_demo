@@ -1,0 +1,16 @@
+variables:
+  puYear:
+    description: Year of the data
+    default: 2019
+  puMonth:
+    description: Month of the data
+    default: 2
+  passengerCount:
+    description: Passangers Count
+    default: 0
+  totalAmount:
+    description: Total Amount
+    default: 10
+  tripDistance:
+    description: Trip Distance
+    default: 1
